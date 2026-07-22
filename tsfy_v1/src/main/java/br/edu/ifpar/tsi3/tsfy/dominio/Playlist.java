@@ -4,25 +4,24 @@
  */
 package br.edu.ifpar.tsi3.tsfy.dominio;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author 1071759
  */
 public class Playlist {
-    
+
     private Usuario dono;
-    
     private String nome;
-    
     private String descricao;
-    
-    private ArrayList<Musica> musicas;
-    
-     public Playlist() { }
+    private Musica[] musicas;
+    private int quantidadeMusicas;
+
+    public Playlist() {
+        this.musicas = new Musica[10];
+    }
 
     public Playlist(Usuario dono, String nome, String descricao) {
+        this();
         this.dono = dono;
         this.nome = nome;
         this.descricao = descricao;
@@ -52,13 +51,37 @@ public class Playlist {
         this.descricao = descricao;
     }
 
-    public ArrayList<Musica> getMusicas() {
+    public Musica[] getMusicas() {
         return musicas;
     }
 
-    public void setMusicas(ArrayList<Musica> musicas) {
-        this.musicas = musicas;
+    public int getQuantidadeMusicas() {
+        return quantidadeMusicas;
     }
-    
-    
+
+    public void adicionarMusica(Musica musica) {
+        if (quantidadeMusicas == musicas.length) {
+            Musica[] novoArray = new Musica[musicas.length + 10];
+            for (int i = 0; i < musicas.length; i++) {
+                novoArray[i] = musicas[i];
+            }
+            musicas = novoArray;
+        }
+
+        musicas[quantidadeMusicas++] = musica;
+    }
+
+    public boolean removerMusica(int indice) {
+        if (indice < 0 || indice >= quantidadeMusicas) {
+            return false;
+        }
+
+        for (int i = indice; i < quantidadeMusicas - 1; i++) {
+            musicas[i] = musicas[i + 1];
+        }
+
+        musicas[quantidadeMusicas - 1] = null;
+        quantidadeMusicas--;
+        return true;
+    }
 }
